@@ -233,32 +233,6 @@ const App = () => {
     setAddAT(false);
     setAddRD(false);
   }
-  const filteredRows = React.useMemo(() => {
-    if (!query) return data;
-
-    if (data.length > 0) {
-      const attributes = Object.keys(data[0]);
-
-      const list = [];
-      for (const current of rows) {
-        for (const attribute of attributes) {
-          if (attribute === "key") {
-            continue;
-          }
-          const value = current[attribute];
-          if (value && value.toLowerCase() === searchTerm.toLowerCase()) {
-            const found = rows.find((row) => row.key === current.key);
-            if (found) {
-              list.push(found);
-            }
-          }
-        }
-      }
-      return list;
-    }
-
-    return [];
-  }, [query, data]);
 
   return (
     <>
@@ -296,7 +270,7 @@ const App = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {filteredRows.map((item) => (
+                {data.map((item) => (
                   <TableRow key={item._id}>
                     <TableCell>{item.DiscordId}</TableCell>
                     <TableCell>{item.PlayerName}</TableCell>
