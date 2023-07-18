@@ -19,7 +19,7 @@ const App = () => {
   const [data, setData] = React.useState([]);
   const [actionType, setActionType] = React.useState("Add");
   const [sheetType, setSheetType] = React.useState("gsheet");
-  const [query, setQuery] = React.useState("gsheet");
+  const [query, setQuery] = React.useState([]);
   const [addChar, setAddChar] = React.useState(false);
   const [addAT, setAddAT] = React.useState(false);
   const [addRD, setAddRD] = React.useState(false);
@@ -38,10 +38,15 @@ const App = () => {
   const [sheet, setSheet] = React.useState("");
   const [errText, setErrText] = React.useState("");
   React.useEffect(() => {
-    axios
-      .get("https://rich-outfit-crow.cyclic.app/char")
-      .then((res) => setData(res.data));
+    axios.get("https://rich-outfit-crow.cyclic.app/char").then((res) => {
+      setQuery(res.data);
+      setData(res.data);
+    });
   }, []);
+
+  const Filter = (event) => {
+    setQuery(data.filter((f) => f.PlayerName.toLowerCase().includes(event.target.value.toLowerCase())));
+  };
 
   let postData;
   let type;
@@ -64,9 +69,10 @@ const App = () => {
         } else if (type === "removeAT") {
           toast("remove AT successfully");
         }
-        axios
-          .get("https://rich-outfit-crow.cyclic.app/char")
-          .then((res) => setData(res.data));
+        axios.get("https://rich-outfit-crow.cyclic.app/char").then((res) => {
+          setQuery(res.data);
+          setData(res.data);
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -94,9 +100,10 @@ const App = () => {
         } else if (type === "removeRD") {
           toast("remove RD successfully");
         }
-        axios
-          .get("https://rich-outfit-crow.cyclic.app/char")
-          .then((res) => setData(res.data));
+        axios.get("https://rich-outfit-crow.cyclic.app/char").then((res) => {
+          setQuery(res.data);
+          setData(res.data);
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -124,9 +131,10 @@ const App = () => {
         } else if (type === "removeWW") {
           toast("remove WW successfully");
         }
-        axios
-          .get("https://rich-outfit-crow.cyclic.app/char")
-          .then((res) => setData(res.data));
+        axios.get("https://rich-outfit-crow.cyclic.app/char").then((res) => {
+          setQuery(res.data);
+          setData(res.data);
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -153,9 +161,10 @@ const App = () => {
         } else if (type === "removeTicket") {
           toast("remove Ticket successfully");
         }
-        axios
-          .get("https://rich-outfit-crow.cyclic.app/char")
-          .then((res) => setData(res.data));
+        axios.get("https://rich-outfit-crow.cyclic.app/char").then((res) => {
+          setQuery(res.data);
+          setData(res.data);
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -248,7 +257,7 @@ const App = () => {
               p: 1,
               borderRadius: "5px",
             }}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={Filter}
           />
           <TableContainer sx={{ background: "#fff" }} component={Paper}>
             <Table aria-label="simple table">
@@ -270,7 +279,7 @@ const App = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {data.map((item) => (
+                {query.map((item) => (
                   <TableRow key={item._id}>
                     <TableCell>{item.DiscordId}</TableCell>
                     <TableCell>{item.PlayerName}</TableCell>
