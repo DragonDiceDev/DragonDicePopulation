@@ -19,6 +19,7 @@ const App = () => {
   const [data, setData] = React.useState([]);
   const [actionType, setActionType] = React.useState("Add");
   const [sheetType, setSheetType] = React.useState("gsheet");
+  const [query, setQuery] = React.useState("gsheet");
   const [addChar, setAddChar] = React.useState(false);
   const [addAT, setAddAT] = React.useState(false);
   const [addRD, setAddRD] = React.useState(false);
@@ -269,7 +270,7 @@ const App = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {data.map((item) => (
+                {data.filter((row) => !query.length || row.PlayerName.toString().toLowerCase().includes(query.toString().toLowerCase())).map((item) => (
                   <TableRow key={item._id}>
                     <TableCell>{item.DiscordId}</TableCell>
                     <TableCell>{item.PlayerName}</TableCell>
